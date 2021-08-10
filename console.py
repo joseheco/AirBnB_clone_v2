@@ -14,8 +14,6 @@ from models.review import Review
 """ Update the def do_create(self, arg): function of your command interpreter (console.py) to allow for object creation with given parameters:
 
 Command syntax: create <Class name> <param 1> <param 2> <param 3>...
-Param syntax: <key name>=<value>
-Value syntax:
 String: "<value>" => starts with a double quote
 any double quote inside the value must be escaped with a backslash \
 all underscores _ must be replace by spaces . Example: You want to set the string My little house to the attribute name, your command line must be name="My_little_house"
