@@ -1,6 +1,7 @@
 -- script SQL that prepares a MySQL server for the project AirBnB
 -- A database hbnb_dev_db
 CREATE DATABASE IF NOT EXISTS hbnb_dev_db;
+USE hbnb_dev_db;
 -- A new user hbnb_dev (in localhost)
 CREATE USER IF NOT EXISTS 'hbnb_dev'@'localhost';
 -- The password of hbnb_dev should be set to hbnb_dev_pwd
