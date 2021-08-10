@@ -151,7 +151,7 @@ class HBNBCommand(cmd.Cmd):
         """ elif args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return """
-        if params[0] not in HBNBCommand.classes[args]():
+        if params[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         elif len(params) == 1:
