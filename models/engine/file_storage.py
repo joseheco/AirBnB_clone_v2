@@ -40,8 +40,8 @@ class FileStorage:
         the method should not do anything"""
         if obj is None:
             return
-        self.save()
-        return FileStorage.__objects
+        del FileStorage.__objects['{}.{}'.format(type(obj).__name__, obj.id)]
+        # return FileStorage.__objects
 
     def reload(self):
         """Loads storage dictionary from file"""
