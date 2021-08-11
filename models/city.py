@@ -7,7 +7,13 @@ from sqlalchemy.orm import relationship
 
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
+<<<<<<< HEAD
    __tablename__ = 'cities'
    state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
    name = Column(String(128), nullable=False)
    places = relationship('Place', cascade = 'all, delete', backref = 'cities')
+=======
+    __tablename__ = 'cities'
+    state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
+    name = Column(String(128), nullable=False)
+>>>>>>> 4454b66d4fccd1e763eebac1cc3168a1dc4cd38e
