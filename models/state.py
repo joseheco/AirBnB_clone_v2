@@ -14,3 +14,4 @@ class State(BaseModel, Base):
     cities = relationship('City', cascade = 'all, delete', backref = 'states')
 
     # falta return the list of city
+    

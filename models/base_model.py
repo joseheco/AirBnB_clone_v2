@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 import os
 
+# tuve problemas de import cannot Base
 if os.getenv('HBNB_TYPE_STORAGE') == 'db':
     Base = declarative_base()
 else:
