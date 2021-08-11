@@ -10,11 +10,13 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        """ Update the prototype of def all(self) to def all(self, cls=None) - that returns the list of objects of one type of class. Example below with State - it’s an optional filtering """
+        """ Update the prototype of def all(self) to def all(self, cls=None)
+        - that returns the list of objects of one type of class. Example below
+        with State - it’s an optional filtering"""
         if cls is None:
             return FileStorage.__objects
         dictNew = {}
-        for  key, val in FileStorage.__objects.items():
+        for key, val in FileStorage.__objects.items():
             if cls == type(val):
                 dictNew[key] = val
         return dictNew
@@ -32,8 +34,10 @@ class FileStorage:
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
-    def delete(self, obj = None):
-        """Add a new public instance method: def delete(self, obj=None): to delete obj from __objects if it’s inside - if obj is equal to None, the method should not do anything"""
+    def delete(self, obj=None):
+        """Add a new public instance method: def delete(self, obj=None):
+        to delete obj from __objects if it’s inside - if obj is equal to None,
+        the method should not do anything"""
         if obj is None:
             return
         self.save()
