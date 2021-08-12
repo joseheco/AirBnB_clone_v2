@@ -8,20 +8,9 @@ from models.amenity import Amenity
 from models.review import Review
 from os import getenv
 
-if getenv('HBNB_TYPE_STORAGE') == 'db':
-    place_amenity = Table('place_amenity', Base.metadata,
-                          Column('place_id', String(60),
-                                 ForeignKey('places.id'),
-                                 nullable=False,
-                                 primary_key=True),
-                          Column('amenity_id', String(60),
-                                 ForeignKey('amenities.id'), nullable=False,
-                                 primary_key=True))
-else:
-    place_amenity = object
 
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
@@ -35,12 +24,21 @@ class Place(BaseModel):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     review = relationship('Review', cascade='all, delete', backref='place')
-    review = relationship('Amenity', secondary=place_amenity,
+    reviews = relationship('Amenity', secondary='place_amenity',
                           viewonly=False, backref='place')
     amenity_ids = []
 
+if getenv('HBNB_TYPE_STORAGE') == 'db':
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 nullable=False,
+                                 primary_key=True),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'), nullable=False,
+                                 primary_key=True))
 
-if getenv('HBNB_TYPE_STORAGE') != 'db':
+elif getenv('HBNB_TYPE_STORAGE') != 'db':
     @property
     def review(self):
         """ return the list of review """
