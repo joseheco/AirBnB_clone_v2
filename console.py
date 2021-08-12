@@ -196,7 +196,7 @@ class HBNBCommand(cmd.Cmd):
                             new_instance.__dict__[key] = quoteNot
             # print(new_instance)
             # storage.save()
-            # print(new_instance.id)
+            print(new_instance.id)
             storage.new(new_instance)
             storage.save()
 
