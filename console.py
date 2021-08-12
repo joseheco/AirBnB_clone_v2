@@ -194,9 +194,10 @@ class HBNBCommand(cmd.Cmd):
                             quoteNot = quoteNot.replace('_', ' ')
                             quoteNot = quoteNot.replace('\"', '"')
                             new_instance.__dict__[key] = quoteNot
-            print(new_instance)
-            storage.save()
-            print(new_instance.id)
+            # print(new_instance)
+            # storage.save()
+            # print(new_instance.id)
+            storage.new(new_instance)
             storage.save()
 
     def help_create(self):
