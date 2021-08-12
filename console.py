@@ -11,17 +11,23 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-""" Update the def do_create(self, arg): function of your command interpreter (console.py) to allow for object creation with given parameters:
+""" Update the def do_create(self, arg): function of your command interpreter
+(console.py) to allow for object creation with given parameters:
 
 Command syntax: create <Class name> <param 1> <param 2> <param 3>...
 String: "<value>" => starts with a double quote
 any double quote inside the value must be escaped with a backslash \
-all underscores _ must be replace by spaces . Example: You want to set the string My little house to the attribute name, your command line must be name="My_little_house"
+all underscores _ must be replace by spaces . Example: You want to set the
+string My little house to the attribute name, your command line must be
+name="My_little_house"
 Float: <unit>.<decimal> => contains a dot .
 Integer: <number> => default case
-If any parameter doesn’t fit with these requirements or can’t be recognized correctly by your program, it must be skipped"""
+If any parameter doesn’t fit with these requirements or can’t be recognized
+correctly by your program, it must be skipped"""
 
 """ Verificamos si es el num es integer """
+
+
 def checkInteger(numStr, negative):
     """ Check if number is an integer"""
     """ It's condition is if negative or positive"""
@@ -31,8 +37,11 @@ def checkInteger(numStr, negative):
     elif numStr.isnumeric():
         return True
 
+
 """ starts with a double quote
 any double quote inside the value must be escaped with a backslash \ """
+
+
 def QuotesEscaped(string):
     """ Checks that all "s in a string are escape """
     for i, char in enumerate(string):
@@ -163,7 +172,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             new_instance = HBNBCommand.classes[params[0]]()
             for param in params[1:]:
-                """ en esto analizarare el value, key, donde <key name>=<value>, donde dividire con el split el key = value """
+                """en esto analizarare el value, key, donde
+                <key name>=<value>, donde dividire con el split el key=value"""
                 paramEq = param.split("=", 1)
                 key = paramEq[0]
                 if len(paramEq) > 1:
@@ -175,7 +185,8 @@ class HBNBCommand(cmd.Cmd):
                     number = value.split(".")
                     if checkInteger(value, 1):
                         new_instance.__dict__[key] = int(value)
-                    elif (len(number) > 1 and checkInteger(number[0], 1) and checkInteger(number[1], 0)):
+                    elif (len(number) > 1 and checkInteger(number[0], 1) and
+                          checkInteger(number[1], 0)):
                         new_instance.__dict__[key] = float(value)
                     elif value.startswith('"') and value.endswith('"'):
                         quoteNot = value[1: -1]
@@ -381,6 +392,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

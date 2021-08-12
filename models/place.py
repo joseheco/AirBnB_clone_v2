@@ -4,20 +4,22 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import models
-from models.amenity import Amenity 
+from models.amenity import Amenity
 from models.review import Review
 from os import getenv
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':
     place_amenity = Table('place_amenity', Base.metadata,
-                        Column('place_id', String(60), ForeignKey('places.id'),
-                            nullable = False,
-                            primary_key = True),
-                        Column('amenity_id', String(60), 
-                            ForeignKey('amenities.id'), nullable = False,
-                            primary_key = True))
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 nullable=False,
+                                 primary_key=True),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'), nullable=False,
+                                 primary_key=True))
 else:
     place_amenity = object
+
 
 class Place(BaseModel):
     """ A place to stay """
@@ -32,10 +34,11 @@ class Place(BaseModel):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    review = relationship('Review', cascade= 'all, delete', backref = 'place')
-    review = relationship('Amenity', secondary = place_amenity, 
-                            viewonly = False, backref = 'place')
+    review = relationship('Review', cascade='all, delete', backref='place')
+    review = relationship('Amenity', secondary=place_amenity,
+                          viewonly=False, backref='place')
     amenity_ids = []
+
 
 if getenv('HBNB_TYPE_STORAGE') != 'db':
     @property
@@ -49,7 +52,7 @@ if getenv('HBNB_TYPE_STORAGE') != 'db':
         """ list of amenities """
         objs = models.storage.all(Amenity).values()
         return [obj for obj in objs if obj.id in self.amenity_ids]
-    
+
     @amenities.setter
     def amenities(self, obj):
         """ add an amenity.id to the attribute amenity_ids """
