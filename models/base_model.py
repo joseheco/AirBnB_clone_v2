@@ -3,12 +3,12 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-import os
+from os import getenv
 import models
-from sqlalchemy import Column, Integer, String, ForeignKey, DATETIME
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 
 # tuve problemas de import cannot Base
-if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+if getenv('HBNB_TYPE_STORAGE') == 'db':
     Base = declarative_base()
 else:
     Base = object
@@ -16,11 +16,11 @@ else:
 
 class BaseModel:
     """A base class for all hbnb models"""
-    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         id = Column(String(60), primary_key=True, nullable=False)
-        created_at = Column(DATETIME, default=datetime.utcnow(),
+        created_at = Column(DateTime, default=datetime.utcnow(),
                             nullable=False)
-        updated_at = Column(DATETIME, default=datetime.utcnow(),
+        updated_at = Column(DateTime, default=datetime.utcnow(),
                             nullable=False)
 
     def __init__(self, *args, **kwargs):
@@ -70,6 +70,7 @@ class BaseModel:
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.now()
+        storage.new(self)
         storage.save()
 
     def to_dict(self):
