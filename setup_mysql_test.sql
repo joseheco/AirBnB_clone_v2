@@ -2,7 +2,7 @@
 -- A database hbnb_test_db
 CREATE DATABASE IF NOT EXISTS hbnb_test_db;
 -- A new user hbnb_test (in localhost)
-CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost';
+CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
 -- The password of hbnb_test should be set to hbnb_test_pwd
 SET PASSWORD FOR 'hbnb_test'@'localhost' = 'hbnb_test_pwd';
 -- hbnb_test should have all privileges on the database hbnb_test_db (and only this database)
