@@ -111,7 +111,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -153,52 +153,18 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        args = args.split()
+        if len(args) == 0:
             print("** class name missing **")
             return
-        params = args.split()
-        """ elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return """
-        if params[0] not in HBNBCommand.classes:
+        if args[0] in HBNBCommand.classes:
+            dic = self.dic_creator(args[1:])
+            instance = HBNBCommand.classes[args[0]](**dic)
+        else:
             print("** class doesn't exist **")
             return
-        elif len(params) == 1:
-            new_instance = HBNBCommand.classes[params[0]]()
-            print(new_instance)
-            storage.save()
-            print(new_instance.id)
-            storage.save()
-        else:
-            new_instance = HBNBCommand.classes[params[0]]()
-            for param in params[1:]:
-                """en esto analizarare el value, key, donde
-                <key name>=<value>, donde dividire con el split el key=value"""
-                paramEq = param.split("=", 1)
-                key = paramEq[0]
-                if len(paramEq) > 1:
-                    value = paramEq[1]
-                else:
-                    continue
-                """ Aqui empezare a analizar los tipos de datos """
-                if len(paramEq) > 1:
-                    number = value.split(".")
-                    if checkInteger(value, 1):
-                        new_instance.__dict__[key] = int(value)
-                    elif (len(number) > 1 and checkInteger(number[0], 1) and
-                          checkInteger(number[1], 0)):
-                        new_instance.__dict__[key] = float(value)
-                    elif value.startswith('"') and value.endswith('"'):
-                        quoteNot = value[1: -1]
-                        if QuotesEscaped(quoteNot):
-                            quoteNot = quoteNot.replace('_', ' ')
-                            quoteNot = quoteNot.replace('\"', '"')
-                            new_instance.__dict__[key] = quoteNot
-            # print(new_instance)
-            # storage.save()
-            print(new_instance.id)
-            storage.new(new_instance)
-            storage.save()
+        print(instance.id)
+        instance.save()
 
     def help_create(self):
         """ Help information for the create method """
