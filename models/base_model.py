@@ -82,8 +82,8 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
         """remove the key _sa_instance_state from the dictionary returned by
         this method only if this key exists"""
-        if '_sa_instance_state' in dictionary:
-            del dictionary['_sa_instance_state']
+        if "_sa_instance_state" in dictionary:
+            del dictionary["_sa_instance_state"]
         return dictionary
 
     def delete(self):
