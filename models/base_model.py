@@ -7,21 +7,20 @@ from os import getenv
 import models
 from sqlalchemy import Column, Integer, String, ForeignKey, DATETIME
 
-# tuve problemas de import cannot Base
-if getenv('HBNB_TYPE_STORAGE') == 'db':
-    Base = declarative_base()
-else:
-    Base = object
+"""if getenv('HBNB_TYPE_STORAGE') == 'db':"""
+Base = declarative_base()
+"""else:
+ #   Base = object"""
 
 
 class BaseModel:
     """A base class for all hbnb models"""
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
-        id = Column(String(60), primary_primary_key=True, nullable=False)
-        created_at = Column(DATETIME, default=datetime.utcnow(),
-                            nullable=False)
-        updated_at = Column(DATETIME, default=datetime.utcnow(),
-                            nullable=False)
+    """if getenv('HBNB_TYPE_STORAGE') == 'db':"""
+    id = Column(String(60), primary_primary_key=True, nullable=False)
+    created_at = Column(DATETIME, default=datetime.utcnow(),
+                        nullable=False)
+    updated_at = Column(DATETIME, default=datetime.utcnow(),
+                        nullable=False)
 
     """Base for hbnb models"""
     def __init__(self, *args, **kwargs):
