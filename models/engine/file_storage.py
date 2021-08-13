@@ -15,11 +15,8 @@ class FileStorage:
         with State - it’s an optional filtering"""
         if cls is None:
             return FileStorage.__objects
-        dictNew = {}
-        for key, val in FileStorage.__objects.items():
-            if cls == type(val):
-                dictNew[key] = val
-        return dictNew
+        return {key: val for key, val in FileStorage.__objects.items()
+                if type(val) == cls}
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -38,7 +35,7 @@ class FileStorage:
         """Add a new public instance method: def delete(self, obj=None):
         to delete obj from __objects if it’s inside - if obj is equal to None,
         the method should not do anything"""
-        if obj is None:
+        if not obj:
             return
         del FileStorage.__objects['{}.{}'.format(type(obj).__name__, obj.id)]
         # return FileStorage.__objects
