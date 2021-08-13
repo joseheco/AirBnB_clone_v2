@@ -33,9 +33,9 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    review = relationship('Review', cascade='all, delete', backref='place')
+    review = relationship('Review', cascade='delete', backref='place')
     amenities = relationship('Amenity', secondary='place_amenity',
-                          viewonly=False, backref='place')
+                          viewonly=False)
     amenity_ids = []
 
 if getenv('HBNB_TYPE_STORAGE') != 'db':
