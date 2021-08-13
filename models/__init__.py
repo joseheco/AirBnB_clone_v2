@@ -9,8 +9,6 @@ from models.city import City
 from models.place import Place
 from models.review import Review
 from os import getenv
-from models.engine.file_storage import FileStorage
-from models.engine.db_storage import DBStorage
 """ Add a conditional depending of the value of the environment variable
 HBNB_TYPE_STORAGE:
 If equal to db:
