@@ -19,7 +19,6 @@ if getenv('HBNB_TYPE_STORAGE') == 'db':
                                  primary_key=True))
 
 
-
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
@@ -35,7 +34,7 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     review = relationship('Review', cascade='delete', backref='place')
     amenities = relationship('Amenity', secondary='place_amenity',
-                          viewonly=False)
+                             viewonly=False)
     amenity_ids = []
 
 if getenv('HBNB_TYPE_STORAGE') != 'db':
@@ -52,7 +51,7 @@ if getenv('HBNB_TYPE_STORAGE') != 'db':
         return [obj for obj in objs if obj.id in self.amenity_ids]
 
     @amenities.setter
-    def amenities(self, obj):
+    def amenities(self, value):
         """ add an amenity.id to the attribute amenity_ids """
-        if type(obj) is Amenity:
-            self.amenity_ids.append(obj.id)
+        if type(value) is Amenity:
+            self.amenity_ids.append(value.id)
