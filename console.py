@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import models
 
 """ Update the def do_create(self, arg): function of your command interpreter
 (console.py) to allow for object creation with given parameters:
@@ -26,29 +27,6 @@ If any parameter doesn’t fit with these requirements or can’t be recognized
 correctly by your program, it must be skipped"""
 
 """ Verificamos si es el num es integer """
-
-
-def checkInteger(numStr, negative):
-    """ Check if number is an integer"""
-    """ It's condition is if negative or positive"""
-    if negative == 1 and numStr.startswith("-"):
-        if numStr[1:].isnumeric():
-            return (True, numStr)
-    elif numStr.isnumeric():
-        return True
-
-
-""" starts with a double quote
-any double quote inside the value must be escaped with a backslash \ """
-
-
-def QuotesEscaped(string):
-    """ Checks that all "s in a string are escape """
-    for i, char in enumerate(string):
-        if char == '"':
-            if char in string[i-1] != '\\':
-                return False
-    return True
 
 
 class HBNBCommand(cmd.Cmd):
@@ -151,54 +129,44 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    def dic_validate(self, args):
+        """
+        Creates a dictionary and validate the values from a list
+        """
+        dic = {}
+        for arg in args:
+            if "=" in arg:
+                value_to_add = arg.split("=", maxsplit=1)
+                key = value_to_add[0]
+                value = value_to_add[1]
+                if value[0] == value[-1] == '"':
+                    value = value.replace('"', '').replace('_', ' ')
+                else:
+                    try:
+                        value = int(value)
+                    except:
+                        try:
+                            value = float(value)
+                        except:
+                            continue
+                dic[key] = value
+        return (dic)
+
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        new_args = args.split()
+        if len(new_args) == 0:
             print("** class name missing **")
             return
-        params = args.split()
-        """ elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return """
-        if params[0] not in HBNBCommand.classes:
+        elif new_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        elif len(params) == 1:
-            new_instance = HBNBCommand.classes[params[0]]()
-            print(new_instance)
-            storage.save()
-            print(new_instance.id)
-            storage.save()
-        else:
-            new_instance = HBNBCommand.classes[params[0]]()
-            for param in params[1:]:
-                """en esto analizarare el value, key, donde
-                <key name>=<value>, donde dividire con el split el key=value"""
-                paramEq = param.split("=", 1)
-                key = paramEq[0]
-                if len(paramEq) > 1:
-                    value = paramEq[1]
-                else:
-                    continue
-                """ Aqui empezare a analizar los tipos de datos """
-                if len(paramEq) > 1:
-                    number = value.split(".")
-                    if checkInteger(value, 1):
-                        new_instance.__dict__[key] = int(value)
-                    elif (len(number) > 1 and checkInteger(number[0], 1) and
-                          checkInteger(number[1], 0)):
-                        new_instance.__dict__[key] = float(value)
-                    elif value.startswith('"') and value.endswith('"'):
-                        quoteNot = value[1: -1]
-                        if QuotesEscaped(quoteNot):
-                            quoteNot = quoteNot.replace('_', ' ')
-                            quoteNot = quoteNot.replace('\"', '"')
-                            new_instance.__dict__[key] = quoteNot
-            # print(new_instance)
-            # storage.save()
-            print(new_instance.id)
-            storage.new(new_instance)
-            storage.save()
+
+        new_dict = self.dic_validate(new_args[1:])
+        instance = HBNBCommand.classes[new_args[0]](**new_dict)
+
+        print(instance.id)
+        instance.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -280,11 +248,10 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
+            for k, v in models.storage.all(eval(args)).items():
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in models.storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)

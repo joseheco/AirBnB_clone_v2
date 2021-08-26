@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """DB_storage engine"""
+import unittest
 from os import getenv
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.user import User
 from models.state import State
 from models.city import City
@@ -25,24 +26,23 @@ class DBStorage:
                                               getenv('HBNB_MYSQL_HOST'),
                                               getenv('HBNB_MYSQL_DB')),
                                       pool_pre_ping=True)
+
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """query on database session"""
-        dicc = {}
-        cls_list = [State, City, Amenity, Review, Place, User]
-        if cls:
-            for obj in self.__session.query(eval(cls)).all():
-                key = '{}.{}'.format(obj.__class__.__name__, obj.id)
-                dicc[key] = obj
-
+        if not cls:
+            res_list = self.__session.query(Amenity)
+            res_list.extend(self.__session.query(City))
+            res_list.extend(self.__session.query(Place))
+            res_list.extend(self.__session.query(Review))
+            res_list.extend(self.__session.query(State))
+            res_list.extend(self.__session.query(User))
         else:
-            for item in cls_list:
-                for obj in self.__session.query(item):
-                    key = '{}.{}'.format(obj.__class__.__name__, obj.id)
-                    dicc[key] = obj
-        return dicc
+            res_list = self.__session.query(cls)
+        return {'{}.{}'.format(type(obj).__name__, obj.id): obj
+                for obj in res_list}
 
     def new(self, obj):
         """ add object to the current database session """
