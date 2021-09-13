@@ -39,7 +39,7 @@ class FileStorage:
             return
         del FileStorage.__objects['{}.{}'.format(type(obj).__name__, obj.id)]
         # return FileStorage.__objects
-    
+
     def close(self):
         """Deserializes the JSON file to objects"""
         self.reload()
